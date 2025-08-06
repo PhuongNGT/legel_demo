@@ -1,0 +1,5 @@
+doctrine,voted_model,mcq_correct,mcq_type,is_native,with_story,error_type,rod,ros,likeable,believable
+concept,llama3,0,limitation,0.0,0.0,Multi-Answers,0.1,0.1,0.0,0.0
+Abstention doctrine,llama3,0,concept,0.0,1.0,Missing Info,0.4,0.2,0.0,0.0
+concept,mistral,0,concept,1.0,1.0,Wrong Reasoning,0.1,0.5,1.0,1.0
+Actio libera in causa,gpt35,1,concept,1.0,1.0,Too Easy,0.4,0.4,1.0,1.0

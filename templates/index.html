@@ -1,0 +1,6 @@
+<h2>Choose a Legal Doctrine to Evaluate</h2>
+<ul>
+{% for doctrine in doctrines %}
+<li><a href="{{ url_for('evaluate', doctrine=doctrine) }}">{{ doctrine }}</a></li>
+{% endfor %}
+</ul>

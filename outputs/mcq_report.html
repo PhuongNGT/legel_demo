@@ -1,0 +1,44 @@
+
+<html>
+<head>
+<title>MCQ Analysis Report</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 20px; }
+table { border-collapse: collapse; }
+th, td { border: 1px solid #ddd; padding: 8px; }
+th { background-color: #f2f2f2; }
+</style>
+</head>
+<body>
+
+<h1>MCQ Analysis Report</h1>
+
+<ul>
+<li><b>Total doctrines:</b> 307</li>
+<li><b>Total samples:</b> 921</li>
+<li><b>Invalid MCQs:</b> 5</li>
+</ul>
+
+<h2>Valid MCQs per model</h2>
+<table>
+<tr><th>Model</th><th>Valid Samples</th></tr>
+<tr><td>gpt35</td><td>305</td></tr>
+<tr><td>llama3</td><td>306</td></tr>
+<tr><td>mistral</td><td>305</td></tr>
+
+</table>
+
+<h2>Average Questions & Options per model</h2>
+<table>
+<tr><th>Model</th><th>Avg Questions</th><th>Avg Options</th></tr>
+<tr><td>gpt35</td><td>2.98</td><td>3.97</td></tr>
+<tr><td>llama3</td><td>2.99</td><td>3.99</td></tr>
+<tr><td>mistral</td><td>2.98</td><td>3.97</td></tr>
+
+</table>
+
+<h2>Valid MCQs per Model (Plot)</h2>
+<img src="mcq_valid_counts.png" alt="MCQ Valid Counts">
+
+</body>
+</html>

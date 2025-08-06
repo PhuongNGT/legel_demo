@@ -1,0 +1,4 @@
+model,num_questions,avg_options
+gpt35,2.98,3.97
+llama3,2.99,3.99
+mistral,2.98,3.97

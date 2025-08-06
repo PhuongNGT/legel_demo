@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Evaluation Results</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+  h2 { color: #2c3e50; }
+  .section { margin-bottom: 20px; }
+  .model { font-weight: bold; color: #2980b9; }
+  .back { margin-top: 20px; display: inline-block; }
+</style>
+</head>
+<body>
+
+<h2>📊 Evaluation Results</h2>
+
+<div class="section">
+  <h3>Vote Distribution <small>(Total: {{ total_votes }})</small></h3>
+  <table border="1" cellpadding="6" cellspacing="0">
+    <tr>
+      <th>Model</th>
+      <th>Votes</th>
+      <th>Percentage</th>
+    </tr>
+    {% for model, count in votes.items() %}
+    <tr>
+      <td class="model">{{ model }}</td>
+      <td>{{ count }}</td>
+      <td>{{ votes_pct[model] }}%</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="section">
+  <h3>✅ MCQ Accuracy (overall): {{ '{:.2f}'.format(mcq_acc) }}%</h3>
+</div>
+
+<div class="section">
+  <h3>📈 Accuracy per model:</h3>
+  <table border="1" cellpadding="6" cellspacing="0">
+    <tr>
+      <th>Model</th>
+      <th>Accuracy</th>
+    </tr>
+    {% for model, acc in model_acc.items() %}
+    <tr>
+      <td class="model">{{ model }}</td>
+      <td>{{ acc }}%</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="section">
+  <h3>🖼️ Visualized Evaluation Charts</h3>
+  {% for img in all_images %}
+    <h4>{{ img.replace(".png", "").replace("_", " ")|capitalize }}</h4>
+    <img src="{{ url_for('static', filename='plots/' + img) }}" style="max-width: 600px;"><br><br>
+  {% endfor %}
+</div>
+
+<a href="{{ url_for('index') }}" class="back">🔙 Back</a>
+
+</body>
+</html>
+

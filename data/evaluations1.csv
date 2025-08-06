@@ -1,0 +1,24 @@
+doctrine,voted_model,mcq_correct
+Abatement ab initio,llama3,0
+Abatement ab initio,llama3,0
+Abatement ab initio,mistral,0
+Acquiescence,gpt35,0
+Abstention doctrine,mistral,0
+Abstention doctrine,gpt35,0
+Abstention doctrine,llama3,0
+Abstention doctrine,mistral,0
+Abatement ab initio,gpt35,0
+concept,mistral,0
+Abstention doctrine,mistral,0
+concept,llama3,0
+concept,gpt35,1
+concept,gpt35,0
+concept,llama3,0
+concept,llama3,1
+concept,llama3,1
+concept,gpt35,1
+concept,mistral,1
+Aggregate effects doctrine,mistral,0
+Aggregate effects doctrine,llama3,0
+Aggregate effects doctrine,gpt35,1
+Alternative liability,mistral,0

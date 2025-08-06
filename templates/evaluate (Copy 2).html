@@ -1,0 +1,28 @@
+<h2>Evaluate: {{ doctrine }}</h2>
+
+<form method="post">
+  <div style="border:1px solid #ccc; margin:10px; padding:10px">
+    <input type="hidden" name="voted_model" value="{{ story.model }}">
+    <strong>Model: {{ story.model }}</strong>
+
+    <p>{{ story.story }}</p>
+
+    {% if story.mcqs|length > 0 %}
+      {% set first_mcq = story.mcqs[0] %}
+      <h4>MCQ:</h4>
+      <p><strong>{{ first_mcq.question }}</strong></p>
+      {% for opt in first_mcq.options %}
+        <label>
+          <input type="radio" name="mcq_answer" value="{{ opt }}" required> {{ opt }}
+        </label><br>
+      {% endfor %}
+      <input type="hidden" name="correct_answer" value="{{ first_mcq.answer }}">
+    {% else %}
+      <p style="color:red"><em>Error loading MCQs</em></p>
+    {% endif %}
+  </div>
+
+  <br>
+  <button type="submit">Submit</button>
+</form>
+
