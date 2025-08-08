@@ -1,92 +1,167 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Evaluate - {{ doctrine }}</title>
+  <meta charset="UTF-8" />
+  <title>Evaluate – {{ doctrine }}</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 32px; background:#fafafa; color:#2c3e50; }
+    h2 { margin-bottom: 8px; }
+    .sub { color:#666; margin-top:0; }
+    .panel { background:#fff; border:1px solid #e5e7eb; border-radius:10px; padding:16px 18px; margin:16px 0; box-shadow:0 2px 5px rgba(0,0,0,.04); }
+    .panel h3 { margin:0 0 10px; color:#0f766e; }
+    .story { white-space:pre-wrap; }
+    fieldset { border:1px dashed #e5e7eb; border-radius:8px; padding:12px 14px; margin:12px 0; }
+    .model-label { display:flex; gap:8px; align-items:center; font-weight:600; color:#2563eb; }
+    .mcq-type { color:#6366f1; font-weight:700; letter-spacing:.5px; }
+    .opt { margin:4px 0; display:block; }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+    .actions { margin-top:18px; }
+    button { background:#2563eb; color:#fff; border:0; padding:10px 16px; border-radius:8px; font-weight:600; cursor:pointer; }
+    button:hover { background:#1e40af; }
+    .muted { color:#9ca3af; font-style:italic; }
+  </style>
 </head>
 <body>
-    <h2>Evaluate: {{ doctrine }}</h2>
 
-    <form method="post">
-        <!-- === MCQ Section === -->
-        <h3>MCQ:</h3>
-        {% if mcq %}
-            <p><strong>{{ mcq.question }}</strong></p>
-            {% for opt in mcq.options %}
-                <label>
-                    <input type="radio" name="mcq_answer" value="{{ opt }}" required> {{ opt }}
-                </label><br>
-            {% endfor %}
-            <input type="hidden" name="correct_answer" value="{{ mcq.answer }}">
+  <h2>Evaluate: {{ doctrine }}</h2>
+  <p class="sub">Chọn 1 story (model) bạn thấy tốt nhất và trả lời 3 câu hỏi MCQ (nếu có).</p>
+      <!-- ============== Stories (3 model) ============== -->
+    <div class="panel">
+      <h3>Stories (pick the best model)</h3>
+      {% for s in stories %}
+        <fieldset>
+          <label class="model-label">
+            <input type="radio" name="voted_model" value="{{ s.model }}" required>
+            Model: {{ s.model }}
+          </label>
+          <p class="story">{{ s.story }}</p>
+        </fieldset>
+      {% endfor %}
+    </div>
+  <form method="post">
+    <!-- ============== MCQs (3 loại) ============== -->
+    <div class="panel">
+      <h3>MCQs</h3>
+
+      <!-- Concept -->
+      <fieldset>
+        <div class="mcq-type">CONCEPT</div>
+        {% if mcqs.concept %}
+          <p><strong>{{ mcqs.concept.question }}</strong></p>
+          {% for opt in mcqs.concept.options %}
+            <label class="opt">
+              <input type="radio" name="answer_concept" value="{{ opt }}" required> {{ opt }}
+            </label>
+          {% endfor %}
+          <input type="hidden" name="correct_concept" value="{{ mcqs.concept.answer }}">
         {% else %}
-            <p style="color:red"><em>No MCQ available</em></p>
+          <p class="muted">No question available for this type.</p>
+          <input type="hidden" name="answer_concept" value="">
+          <input type="hidden" name="correct_concept" value="">
         {% endif %}
+      </fieldset>
 
-        <hr>
+      <!-- Ending (Prediction) -->
+      <fieldset>
+        <div class="mcq-type">ENDING / PREDICTION</div>
+        {% if mcqs.ending %}
+          <p><strong>{{ mcqs.ending.question }}</strong></p>
+          {% for opt in mcqs.ending.options %}
+            <label class="opt">
+              <input type="radio" name="answer_ending" value="{{ opt }}" required> {{ opt }}
+            </label>
+          {% endfor %}
+          <input type="hidden" name="correct_ending" value="{{ mcqs.ending.answer }}">
+        {% else %}
+          <p class="muted">No question available for this type.</p>
+          <input type="hidden" name="answer_ending" value="">
+          <input type="hidden" name="correct_ending" value="">
+        {% endif %}
+      </fieldset>
 
-        <!-- === Story Section === -->
-        <h3>Stories:</h3>
-        {% for s in stories %}
-            <fieldset style="border:1px solid #ccc; margin:10px; padding:10px">
-                <label>
-                    <input type="radio" name="voted_model" value="{{ s.model }}" required>
-                    <strong>Model: {{ s.model }}</strong>
-                </label>
-                <p>{{ s.story }}</p>
-            </fieldset>
-        {% endfor %}
+      <!-- Limitation -->
+      <fieldset>
+        <div class="mcq-type">LIMITATION</div>
+        {% if mcqs.limitation %}
+          <p><strong>{{ mcqs.limitation.question }}</strong></p>
+          {% for opt in mcqs.limitation.options %}
+            <label class="opt">
+              <input type="radio" name="answer_limitation" value="{{ opt }}" required> {{ opt }}
+            </label>
+          {% endfor %}
+          <input type="hidden" name="correct_limitation" value="{{ mcqs.limitation.answer }}">
+        {% else %}
+          <p class="muted">No question available for this type.</p>
+          <input type="hidden" name="answer_limitation" value="">
+          <input type="hidden" name="correct_limitation" value="">
+        {% endif %}
+      </fieldset>
+    </div>
 
-        <hr>
 
-        <!-- === Additional Fields === -->
 
-        <label><strong>MCQ Type:</strong>
-            <select name="mcq_type" required>
-                <option value="concept">Concept</option>
-                <option value="prediction">Prediction</option>
-                <option value="limitation">Limitation</option>
-            </select>
-        </label><br><br>
+    <!-- ============== Meta đánh giá ============== -->
+    <div class="panel">
+      <h3>Additional Feedback</h3>
 
-        <label><strong>Are you a native speaker?</strong></label><br>
-        <label><input type="radio" name="is_native" value="1" required> Yes</label>
-        <label><input type="radio" name="is_native" value="0" required> No</label><br><br>
+      <div class="grid">
+        <div>
+          <label><strong>Are you a native speaker?</strong></label><br>
+          <label><input type="radio" name="is_native" value="1" required> Yes</label>
+          <label><input type="radio" name="is_native" value="0" required> No</label>
+        </div>
 
-        <label><strong>Did you read the story before answering?</strong></label><br>
-        <label><input type="radio" name="with_story" value="1" required> Yes</label>
-        <label><input type="radio" name="with_story" value="0" required> No</label><br><br>
+        <div>
+          <label><strong>Did you read the story before answering?</strong></label><br>
+          <label><input type="radio" name="with_story" value="1" required> Yes</label>
+          <label><input type="radio" name="with_story" value="0" required> No</label>
+        </div>
 
-        <label><strong>Error Type (if any):</strong></label>
-        <select name="error_type">
-            <option value="">-- None --</option>
-            <option value="Too Easy">Too Easy</option>
-            <option value="Missing Info">Missing Info</option>
-            <option value="Confusing">Confusing</option>
-            <option value="Multi-Answers">Multi-Answers</option>
-            <option value="No Answer">No Answer</option>
-            <option value="Wrong Reasoning">Wrong Reasoning</option>
-            <option value="Other">Other</option>
-        </select><br><br>
-
-        <label><strong>Rate of Difficulty (RoD):</strong>
+        <div>
+          <label><strong>Rate of Difficulty (RoD):</strong><br>
             <input type="number" name="rod" min="0" max="1" step="0.1" required>
-        </label><br><br>
+          </label>
+        </div>
 
-        <label><strong>Rate of Satisfaction (RoS):</strong>
+        <div>
+          <label><strong>Rate of Satisfaction (RoS):</strong><br>
             <input type="number" name="ros" min="0" max="1" step="0.1" required>
-        </label><br><br>
+          </label>
+        </div>
 
-        <label><strong>Likeable?</strong></label><br>
-        <label><input type="radio" name="likeable" value="1" required> Yes</label>
-        <label><input type="radio" name="likeable" value="0" required> No</label><br><br>
+        <div>
+          <label><strong>Likeable?</strong></label><br>
+          <label><input type="radio" name="likeable" value="1" required> Yes</label>
+          <label><input type="radio" name="likeable" value="0" required> No</label>
+        </div>
 
-        <label><strong>Believable?</strong></label><br>
-        <label><input type="radio" name="believable" value="1" required> Yes</label>
-        <label><input type="radio" name="believable" value="0" required> No</label><br><br>
+        <div>
+          <label><strong>Believable?</strong></label><br>
+          <label><input type="radio" name="believable" value="1" required> Yes</label>
+          <label><input type="radio" name="believable" value="0" required> No</label>
+        </div>
 
-        <!-- === Submit Button === -->
-        <button type="submit">Submit</button>
-    </form>
+        <div style="grid-column: 1 / -1;">
+          <label><strong>Error Type (if any):</strong><br>
+            <select name="error_type">
+              <option value="">-- None --</option>
+              <option value="Too Easy">Too Easy</option>
+              <option value="Missing Info">Missing Info</option>
+              <option value="Confusing">Confusing</option>
+              <option value="Multi-Answers">Multi-Answers</option>
+              <option value="No Answer">No Answer</option>
+              <option value="Wrong Reasoning">Wrong Reasoning</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+
 </body>
 </html>
-
