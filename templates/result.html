@@ -4,11 +4,65 @@
 <meta charset="UTF-8">
 <title>Evaluation Results</title>
 <style>
-  body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
-  h2 { color: #2c3e50; }
-  .section { margin-bottom: 20px; }
-  .model { font-weight: bold; color: #2980b9; }
-  .back { margin-top: 20px; display: inline-block; }
+  body { 
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; 
+    margin: 32px; 
+    background: #fafafa; 
+    color: #2c3e50; 
+    line-height: 1.6; 
+  }
+  h2 { 
+    color: #0f766e; 
+    margin-bottom: 8px;
+  }
+  .section { 
+    margin-bottom: 28px; 
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 16px 18px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.04);
+  }
+  table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 10px;
+  }
+  th, td { 
+    padding: 10px 12px; 
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+  }
+  th { 
+    background: #f3f4f6; 
+    font-weight: 600; 
+    color: #374151;
+  }
+  tr:hover td {
+    background: #f9fafb;
+  }
+  .model { 
+    font-weight: bold; 
+    color: #2563eb; 
+  }
+  .back { 
+    margin-top: 20px; 
+    display: inline-block;
+    background: #2563eb;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .back:hover { 
+    background: #1e40af; 
+  }
+  img {
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.08);
+    margin-top: 8px;
+  }
 </style>
 </head>
 <body>
@@ -17,19 +71,19 @@
 
 <div class="section">
   <h3>Vote Distribution <small>(Total: {{ total_votes }})</small></h3>
-  <table border="1" cellpadding="6" cellspacing="0">
+  <table>
     <tr>
       <th>Model</th>
       <th>Votes</th>
       <th>Percentage</th>
     </tr>
-    {% for model, count in votes.items() %}
+  {% for model, count in model_votes.items() %}
     <tr>
       <td class="model">{{ model }}</td>
       <td>{{ count }}</td>
-      <td>{{ votes_pct[model] }}%</td>
+      <td>{{ model_votes_pct[model] }}%</td>
     </tr>
-    {% endfor %}
+  {% endfor %}
   </table>
 </div>
 
@@ -39,7 +93,7 @@
 
 <div class="section">
   <h3>📈 Accuracy per model:</h3>
-  <table border="1" cellpadding="6" cellspacing="0">
+  <table>
     <tr>
       <th>Model</th>
       <th>Accuracy</th>
@@ -65,4 +119,3 @@
 
 </body>
 </html>
-
