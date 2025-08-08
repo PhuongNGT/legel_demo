@@ -1,6 +1,114 @@
-<h2>Choose a Legal Doctrine to Evaluate</h2>
-<ul>
-{% for doctrine in doctrines %}
-<li><a href="{{ url_for('evaluate', doctrine=doctrine) }}">{{ doctrine }}</a></li>
-{% endfor %}
-</ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Choose a Legal Doctrine</title>
+  <style>
+    :root{
+      --bg:#f7f8fb; --card:#ffffff; --text:#223; --muted:#667085;
+      --accent:#2563eb; --accent-2:#1e40af; --border:#e5e7eb;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; padding:32px; font:16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text); background:var(--bg);
+    }
+    header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:22px;}
+    h2{margin:0; font-size:24px; letter-spacing:.2px;}
+    .muted{color:var(--muted); font-size:14px;}
+    .wrapper{
+      background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px;
+      box-shadow:0 6px 20px rgba(0,0,0,.05);
+    }
+    .toolbar{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px;}
+    .search{
+      flex:1 1 320px; display:flex; align-items:center; gap:8px;
+      background:#f3f4f6; border:1px solid var(--border); border-radius:10px; padding:10px 12px;
+    }
+    .search input{
+      width:100%; border:0; outline:0; background:transparent; font-size:15px; color:var(--text);
+    }
+    .count{color:var(--muted); font-size:14px;}
+    .grid{
+      list-style:none; padding:0; margin:0;
+      display:grid; gap:10px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+    .item a{
+      display:block; text-decoration:none; color:var(--text); background:var(--card);
+      border:1px solid var(--border); border-radius:12px; padding:14px 12px;
+      transition:transform .08s ease, box-shadow .08s ease, border-color .12s;
+    }
+    .item a:hover{
+      transform: translateY(-1px);
+      border-color: var(--accent);
+      box-shadow:0 6px 18px rgba(37,99,235,.15);
+    }
+    .item .title{font-weight:600; font-size:15px; line-height:1.35;}
+    .item .subtitle{color:var(--muted); font-size:12px; margin-top:6px;}
+    .badge{
+      display:inline-block; background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe;
+      font-size:11px; padding:2px 6px; border-radius:999px; margin-top:8px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h2>Choose a Legal Doctrine to Evaluate</h2>
+      <div class="muted">Pick a doctrine to see three stories (one per model) plus MCQs.</div>
+    </div>
+  </header>
+
+  <div class="wrapper">
+    <div class="toolbar">
+      <div class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21 21l-3.9-3.9M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4z"
+                stroke="#667085" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <input id="searchInput" type="text" placeholder="Search doctrines..." />
+      </div>
+      <div class="count" id="countInfo"></div>
+    </div>
+
+    <ul class="grid" id="doctrineList">
+      {% for doctrine in doctrines %}
+      <li class="item">
+        <a href="{{ url_for('evaluate', doctrine=doctrine) }}">
+          <div class="title">{{ doctrine }}</div>
+          <div class="subtitle">Evaluate stories & answer MCQs</div>
+          <span class="badge">Evaluate</span>
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <script>
+    const input = document.getElementById('searchInput');
+    const list = document.getElementById('doctrineList');
+    const count = document.getElementById('countInfo');
+    const items = Array.from(list.querySelectorAll('.item'));
+
+    function updateCount(){
+      const total = items.length;
+      const visible = items.filter(i => i.style.display !== 'none').length;
+      count.textContent = visible === total ? `${total} doctrines`
+                          : `${visible} / ${total} doctrines`;
+    }
+
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      items.forEach(li => {
+        const title = li.querySelector('.title').textContent.toLowerCase();
+        li.style.display = title.includes(q) ? '' : 'none';
+      });
+      updateCount();
+    });
+
+    // initial
+    updateCount();
+  </script>
+</body>
+</html>
