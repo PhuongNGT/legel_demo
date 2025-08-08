@@ -10,7 +10,7 @@ import httpx
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
-    raise RuntimeError("❌ OPENROUTER_API_KEY is missing. Please check your .env file.")
+    raise RuntimeError("❌ OPENAI_API_KEY is missing. Please check your .env file.")
 # ==== Tham số dòng lệnh ====
 parser = argparse.ArgumentParser()
 parser.add_argument("--model", type=str, required=True)
@@ -57,4 +57,3 @@ with open(input_path, newline='', encoding='utf-8') as infile, \
             writer.writerow([row["doctrine"], row["definition"], story])
         except Exception as e:
             print(f"[⚠️] Failed on {row['doctrine']} → {e}")
-
